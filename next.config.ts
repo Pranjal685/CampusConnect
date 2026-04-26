@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Force webpack bundler — disables Turbopack to prevent panic crashes
 };
 
 export default nextConfig;
