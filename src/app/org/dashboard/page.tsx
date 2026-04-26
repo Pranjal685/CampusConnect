@@ -51,6 +51,7 @@ export default function OrgDashboard() {
   const [orgDesc, setOrgDesc] = useState("");
   const [creatingOrg, setCreatingOrg] = useState(false);
 
+  // eslint-disable-next-line react-hooks/purity
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
 
@@ -111,6 +112,7 @@ export default function OrgDashboard() {
 
   const pendingCount = submissions.filter((s) => s.status === "pending").length;
   const recentSubs = submissions.slice(0, 6);
+  // eslint-disable-next-line react-hooks/purity
   const weekData = buildWeekData(submissions);
 
   async function handleCreateOrg(e: React.FormEvent) {

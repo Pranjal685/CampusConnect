@@ -62,11 +62,10 @@ Ambassadors use this to complete tasks, earn points, and get recognized.
   /forms/ProofSubmissionForm.tsx
 
 /lib
-  /supabase.ts                     → Supabase client init
-  /auth.ts                         → Auth helpers
+  /supabase.ts                     → Supabase client init + type definitions
+  /db.ts                           → All database operations (central DB layer)
   /points.ts                       → Points engine logic
   /badges.ts                       → Badge award logic
-  /seed.ts                         → Demo seed data
 
 ---
 
@@ -108,21 +107,22 @@ After login redirect to /org/dashboard or /ambassador/dashboard based on role.
 
 ---
 
-## AI Scoring (Claude API)
+## AI Scoring (OpenRouter API)
 Endpoint: POST /api/score-submission
-Input: { submission_id, proof_text, task_description }
-Output: { score: 0-100, feedback: string }
-Uses Anthropic claude-sonnet-4-20250514 model.
+Input: { submissionId }
+Output: { score: 0-100, feedback: string, pointsAwarded: number }
+Uses OpenRouter API with openai/gpt-4o model.
 Score gets saved to submissions.ai_score and submissions.ai_feedback.
 Points awarded = (ai_score / 100) * task points_value (rounded).
-API key from env: ANTHROPIC_API_KEY
+API key from env: OPENROUTER_API_KEY
 
 ---
 
 ## Environment Variables
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
-ANTHROPIC_API_KEY=
+OPENROUTER_API_KEY=
+NEXT_PUBLIC_SITE_URL=
 
 ---
 
@@ -139,14 +139,30 @@ ANTHROPIC_API_KEY=
 
 ---
 
-## Current Status
-[ ] — Update this as features get built so Claude Code 
-always knows what's done and what's pending.
+## Current Status (Updated 26 April 2026)
+[x] Landing page with dark glassmorphism design
+[x] Auth page — login + signup with role selection + Suspense boundary
+[x] Org dashboard — stats, charts, activity feed
+[x] Org tasks — CRUD with create modal
+[x] Org ambassadors — table with expandable submissions
+[x] Org leaderboard — ranked table with search
+[x] Ambassador dashboard — points, streak, available tasks
+[x] Ambassador tasks — available + submitted with status
+[x] Ambassador task detail — proof submission flow
+[x] Ambassador achievements — badges + points history chart
+[x] Ambassador leaderboard — highlights current user
+[x] AI scoring endpoint — OpenRouter GPT-4o integration
+[x] Points engine — auto-award on approval with AI scaling
+[x] Badge system — all 6 conditions implemented
+[x] Auth middleware — role-based route protection
+[x] Error boundaries — org, ambassador, and global
+[x] README.md — full hackathon submission doc
+[x] Security audit — credentials in .env.local only, no direct supabase in pages
+[ ] Supabase RLS policies (configure in Supabase dashboard)
+[ ] Vercel deployment
 
 ## What Claude Code Should Focus On
-- Complex business logic (points engine, badge triggers)
-- AI scoring API route (Claude API integration)
-- Supabase RLS policies
-- Debugging and fixing Antigravity output
+- Supabase RLS policies (configure in dashboard)
+- Vercel deployment + environment variables
 - Performance optimizations
-- README.md generation for submission
+- Any remaining edge-case bugs

@@ -118,6 +118,17 @@ export async function getActiveTasksForAmbassador(orgId: string): Promise<Task[]
   return data || [];
 }
 
+export async function getTaskById(taskId: string): Promise<Task | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from('tasks')
+    .select('*')
+    .eq('id', taskId)
+    .single();
+  if (error) return null;
+  return data;
+}
+
 export async function createTask(
   task: Omit<Task, 'id' | 'created_at' | 'status'>
 ): Promise<Task> {

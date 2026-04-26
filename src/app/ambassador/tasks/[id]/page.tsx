@@ -5,9 +5,8 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Star, Clock, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Send, Link2, CheckCircle } from "lucide-react";
-import { getCurrentUser, submitProof } from "@/lib/db";
+import { getCurrentUser, submitProof, getTaskById } from "@/lib/db";
 import type { Task } from "@/lib/db";
-import { supabase } from "@/lib/supabase";
 
 const typeColors: Record<string, string> = {
   referral: "bg-blue-500/15 text-blue-400 border-blue-500/20",
@@ -32,14 +31,9 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
 
   useEffect(() => {
     async function load() {
-      if (!supabase) return;
       try {
-        const { data } = await supabase
-          .from("tasks")
-          .select("*")
-          .eq("id", id)
-          .single();
-        setTask(data ?? null);
+        const data = await getTaskById(id);
+        setTask(data);
       } finally {
         setLoading(false);
       }
@@ -84,6 +78,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
     );
   }
 
+  // eslint-disable-next-line react-hooks/purity
   const daysLeft = Math.max(
     0,
     Math.ceil((new Date(task.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24))

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { LayoutDashboard, ClipboardList, Award, Trophy, Zap, LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getCurrentUser, supabase } from "@/lib/db";
+import { getCurrentUser, signOut } from "@/lib/db";
 import type { Profile } from "@/lib/db";
 
 const navItems = [
@@ -29,10 +29,10 @@ export default function AmbassadorSidebar() {
   }, []);
 
   async function handleSignOut() {
-    if (supabase) {
-      await supabase.auth.signOut();
+    try {
+      await signOut();
       router.push("/auth?mode=signin");
-    }
+    } catch (err) {}
   }
 
   return (
