@@ -24,7 +24,7 @@
 
 ## 🚀 Live Demo
 
-> **🌐 [ATTACH YOUR DEPLOYED URL HERE]**
+> **🌐 https://campus-connect-one-wheat.vercel.app/**
 > *(Replace this line with your Vercel deployment URL)*
 
 ---
