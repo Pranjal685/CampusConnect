@@ -18,14 +18,12 @@
 ## 📹 Demo Video
 
 > **🎬 https://drive.google.com/file/d/1uc24Lk53w09CQv3Vz_rydb5zkvL0Fwlm/view?usp=sharing**
-> *(Replace this line with your Google Drive / YouTube / Loom link)*
 
 ---
 
 ## 🚀 Live Demo
 
 > **🌐 https://campus-connect-one-wheat.vercel.app/**
-> *(Replace this line with your Vercel deployment URL)*
 
 ---
 
