@@ -36,7 +36,7 @@ export default function OrgSidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 w-[240px] glass border-r border-white/[0.06] flex flex-col z-40" style={{ borderRadius: 0 }}>
+    <aside className="w-[240px] shrink-0 h-full glass border-r border-white/[0.06] flex flex-col overflow-y-auto" style={{ borderRadius: 0 }}>
       <div className="p-5 border-b border-white/[0.04]">
         <Link href="/org/dashboard" className="flex items-center gap-2.5 group">
           <div className="w-7 h-7 rounded-lg bg-[#6C5CE7] flex items-center justify-center transition-transform group-hover:scale-110">

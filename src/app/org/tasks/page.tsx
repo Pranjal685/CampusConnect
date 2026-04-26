@@ -45,7 +45,7 @@ export default function OrgTasksPage() {
 
   if (!loading && !orgId) {
     return (
-      <div className="max-w-6xl text-center py-20">
+      <div className="w-full text-center py-20">
         <p className="text-white mb-2">Please set up your organization first.</p>
         <a href="/org/dashboard" className="text-sm text-[#A29BFE] hover:text-white">Go to Dashboard</a>
       </div>
@@ -98,7 +98,7 @@ export default function OrgTasksPage() {
   }
 
   return (
-    <div className="max-w-6xl">
+    <div className="w-full">
       <div className="flex items-center justify-between mb-6">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="text-xl font-bold text-white">Tasks</h1>

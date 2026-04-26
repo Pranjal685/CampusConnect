@@ -62,7 +62,16 @@ export async function middleware(request: NextRequest) {
       .eq('id', user.id)
       .single();
 
-    const dest = profile?.role === 'org' ? '/org/dashboard' : '/ambassador/dashboard';
+    // Fix 3: no profile row = orphaned auth user (signup profile insert failed)
+    // Sign out to clear the bad session — prevents /auth ↔ /dashboard redirect loop.
+    // supabase.auth.signOut() calls setAll which writes cleared cookies onto `response`,
+    // so returning `response` here serves /auth with a clean session state.
+    if (!profile) {
+      await supabase.auth.signOut();
+      return response;
+    }
+
+    const dest = profile.role === 'org' ? '/org/dashboard' : '/ambassador/dashboard';
     return NextResponse.redirect(new URL(dest, request.url));
   }
 

@@ -44,7 +44,7 @@ export default function AmbassadorTasksPage() {
   }, []);
 
   return (
-    <div className="max-w-6xl">
+    <div className="w-full">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
         <h1 className="text-xl font-bold text-white">Tasks</h1>
         <p className="text-xs text-[#6b6b8a] mt-0.5">Complete tasks to earn points and badges</p>

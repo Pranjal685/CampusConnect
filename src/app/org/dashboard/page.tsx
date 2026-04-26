@@ -179,7 +179,7 @@ export default function OrgDashboard() {
   }
 
   return (
-    <div className="max-w-6xl">
+    <div className="w-full">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
         {loading ? (
           <Skeleton className="h-6 w-48 mb-1" />
@@ -219,15 +219,17 @@ export default function OrgDashboard() {
           {loading ? (
             <Skeleton className="h-[200px]" />
           ) : (
-            <ResponsiveContainer width="100%" height={200} minWidth={0}>
-              <BarChart data={weekData} barCategoryGap="20%">
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
-                <XAxis dataKey="day" tick={{ fill: "#6b6b8a", fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: "#6b6b8a", fontSize: 11 }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ backgroundColor: "rgba(12,12,24,0.95)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, fontSize: 12, color: "#f0f0f5" }} />
-                <Bar dataKey="count" fill="#6C5CE7" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <div style={{ width: "100%", height: 200 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={weekData} barCategoryGap="20%">
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                  <XAxis dataKey="day" tick={{ fill: "#6b6b8a", fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fill: "#6b6b8a", fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ backgroundColor: "rgba(12,12,24,0.95)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, fontSize: 12, color: "#f0f0f5" }} />
+                  <Bar dataKey="count" fill="#6C5CE7" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           )}
         </motion.div>
 

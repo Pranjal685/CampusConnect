@@ -49,6 +49,23 @@ export async function signUpWithEmail(
   if (authError) throw authError;
   if (!authData.user) throw new Error('Sign up failed');
 
+  // Insert profile row immediately — without this getCurrentUser() returns null
+  // and middleware redirects the user back to /auth in a loop
+  const { error: profileError } = await supabase.from('profiles').upsert(
+    {
+      id: authData.user.id,
+      email,
+      full_name: fullName,
+      role,
+      org_id: orgId || null,
+    },
+    { onConflict: 'id', ignoreDuplicates: true }
+  );
+  if (profileError) {
+    // Log but don't throw — auth succeeded, auth page will catch null profile below
+    console.error('Profile insert failed:', profileError);
+  }
+
   return authData;
 }
 

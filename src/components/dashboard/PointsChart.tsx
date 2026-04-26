@@ -21,8 +21,8 @@ export default function PointsChart({ data, title = "Points Over Time" }: Points
         <TrendingUp className="w-4 h-4 text-[#A29BFE]" />
         <h3 className="text-sm font-semibold text-white">{title}</h3>
       </div>
-      <div className="h-48">
-        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+      <div style={{ width: "100%", height: 192 }}>
+        <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
             <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#6b6b8a" }} axisLine={false} tickLine={false} />
