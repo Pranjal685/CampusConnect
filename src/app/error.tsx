@@ -22,8 +22,9 @@ export default function GlobalError({
           <AlertCircle className="w-6 h-6 text-red-400" />
         </div>
         <h2 className="text-lg font-bold text-white mb-2">Something went wrong</h2>
+        {/* SECURITY FIX: never render error.message — leaks Supabase internals */}
         <p className="text-sm text-[#6b6b8a] mb-6">
-          {error.message || "An unexpected error occurred. Please try again."}
+          An unexpected error occurred. Please try again.
         </p>
         <div className="flex gap-3 justify-center">
           <button

@@ -160,6 +160,15 @@ export async function submitProof(
   proofUrl?: string
 ): Promise<Submission> {
   if (!supabase) throw new Error('Supabase not configured');
+
+  // SECURITY FIX: reject javascript: and data: URL schemes to prevent injection
+  if (proofUrl) {
+    const scheme = proofUrl.trim().toLowerCase();
+    if (!scheme.startsWith('https://') && !scheme.startsWith('http://')) {
+      throw new Error('Proof URL must start with https:// or http://');
+    }
+  }
+
   const { data, error } = await supabase
     .from('submissions')
     .insert({

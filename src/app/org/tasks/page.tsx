@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus } from "lucide-react";
+import { toast } from "sonner";
 import TaskCard from "@/components/dashboard/TaskCard";
 import CreateTaskForm from "@/components/forms/CreateTaskForm";
 import {
@@ -70,8 +71,11 @@ export default function OrgTasksPage() {
       });
       setTasks((prev) => [newTask, ...prev]);
       setShowForm(false);
+      toast.success("Task created successfully");
     } catch (err) {
-      console.error("Failed to create task:", err);
+      // SECURITY FIX: log full error server-side, show generic message to user
+      console.error("createTask error:", err);
+      toast.error("Failed to create task. Please try again.");
     }
   }
 
@@ -84,10 +88,12 @@ export default function OrgTasksPage() {
         setTasks((prev) =>
           prev.map((t) => (t.id === taskId ? { ...t, status: "closed" as const } : t))
         );
+        toast.success("Task closed");
       }
-      // Note: re-opening a closed task is not supported in the current schema
     } catch (err) {
-      console.error("Failed to toggle task status:", err);
+      // SECURITY FIX: log full error, show generic message
+      console.error("closeTask error:", err);
+      toast.error("Failed to update task. Please try again.");
     }
   }
 

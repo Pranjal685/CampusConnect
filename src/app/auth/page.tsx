@@ -48,7 +48,18 @@ function AuthPage() {
         router.push(role === "org" ? "/org/dashboard" : "/ambassador/dashboard");
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Something went wrong.";
+      // SECURITY FIX: map raw Supabase error messages to safe user-facing strings
+      const raw = (err instanceof Error ? err.message : "").toLowerCase();
+      let message = "Something went wrong. Please try again.";
+      if (raw.includes("invalid login credentials") || raw.includes("invalid email or password")) {
+        message = "Invalid email or password.";
+      } else if (raw.includes("already registered") || raw.includes("user already registered")) {
+        message = "An account with this email already exists.";
+      } else if (raw.includes("email not confirmed")) {
+        message = "Please confirm your email before signing in.";
+      } else if (raw.includes("password") && raw.includes("length")) {
+        message = "Password must be at least 6 characters.";
+      }
       setError(message);
     } finally {
       setLoading(false);

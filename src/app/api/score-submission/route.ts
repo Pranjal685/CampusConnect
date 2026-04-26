@@ -1,17 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 import { processApprovedSubmission } from '@/lib/points';
 
 export async function POST(request: NextRequest) {
   try {
-    const { submissionId } = await request.json();
+    const body = await request.json().catch(() => ({}));
+    const { submissionId } = body;
 
     if (!submissionId) {
       return NextResponse.json({ error: 'submissionId is required' }, { status: 400 });
     }
 
-    if (!supabase) {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       return NextResponse.json({ error: 'Supabase not configured' }, { status: 500 });
+    }
+
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value;
+          },
+        },
+      }
+    );
+
+    // SECURITY FIX: require authenticated session — prevents unauthenticated AI scoring (cost exploit)
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Fetch submission + task
@@ -23,6 +44,11 @@ export async function POST(request: NextRequest) {
 
     if (fetchError || !submission) {
       return NextResponse.json({ error: 'Submission not found' }, { status: 404 });
+    }
+
+    // SECURITY FIX: idempotency check — prevents double-scoring and double point awards
+    if (submission.ai_score !== null) {
+      return NextResponse.json({ error: 'Already scored' }, { status: 409 });
     }
 
     const task = submission.task;

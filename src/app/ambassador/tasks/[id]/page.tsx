@@ -51,7 +51,9 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
       await submitProof(id, profile.id, proofText, proofUrl || undefined);
       setSubmitted(true);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Submission failed. Please try again.");
+      // SECURITY FIX: log full error, show generic message to user
+      console.error("submitProof error:", err);
+      setError("Submission failed. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -155,6 +157,7 @@ export default function TaskDetailPage({ params }: { params: Promise<{ id: strin
               placeholder="I posted on LinkedIn and got 200+ impressions. I tagged 5 connections including..."
               className="w-full px-3 py-2.5 rounded-xl text-sm text-white bg-white/[0.04] border border-white/[0.08] focus:border-[#6C5CE7] focus:ring-1 focus:ring-[#6C5CE7]/30 outline-none placeholder:text-[#6b6b8a]/60 transition-all min-h-[100px] resize-none"
               required
+              maxLength={5000}
             />
           </div>
 

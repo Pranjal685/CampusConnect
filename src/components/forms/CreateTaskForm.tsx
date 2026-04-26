@@ -66,6 +66,7 @@ export default function CreateTaskForm({ onClose, onSubmit }: CreateTaskFormProp
               placeholder="e.g., Share event on LinkedIn"
               className="glass border-white/10 text-white text-sm"
               required
+              maxLength={200}
             />
           </div>
 
@@ -77,6 +78,7 @@ export default function CreateTaskForm({ onClose, onSubmit }: CreateTaskFormProp
               placeholder="Describe the task requirements in detail..."
               className="glass border-white/10 text-white text-sm min-h-[80px]"
               required
+              maxLength={2000}
             />
           </div>
 

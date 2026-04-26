@@ -2,6 +2,7 @@ import { supabase } from './supabase';
 import type { Badge } from './supabase';
 import { awardBadge, getLeaderboard } from './db';
 
+
 export type BadgeType = Badge['badge_type'];
 
 export const BADGE_INFO: Record<BadgeType, { name: string; description: string; icon: string; howToEarn: string }> = {
